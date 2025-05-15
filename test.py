@@ -4,7 +4,7 @@ from kivy.uix.label import Label
 
 class TestApp(App):
     def build(self):
-        return Label(text="Hello Pi!")
+        return Label(text="This is a Test")
 
 
 if __name__ == "__main__":
