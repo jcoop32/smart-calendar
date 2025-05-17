@@ -5,6 +5,8 @@ from kivy.uix.gridlayout import GridLayout
 import calendar
 import datetime
 
+from colors import COLORS
+
 from kivy.uix.label import Label
 from kivy.uix.button import Button
 
@@ -18,6 +20,7 @@ current_datetime = datetime.datetime.now()
 month_name = current_datetime.strftime("%B")
 current_month = current_datetime.month
 current_year = current_datetime.year
+current_day = current_datetime.day
 
 
 class CalendarWidget(GridLayout):
@@ -40,7 +43,25 @@ class CalendarWidget(GridLayout):
                     label = str(day)
                 else:
                     label = ""
-                self.add_widget(Button(text=label, font_size=48))
+
+                if day == current_day:
+                    self.add_widget(
+                        Button(
+                            text=label,
+                            color=COLORS["black"],
+                            font_size=48,
+                            background_color=COLORS["purple"],
+                        )
+                    )
+                else:
+                    self.add_widget(
+                        Button(
+                            text=label,
+                            color=COLORS["black"],
+                            font_size=48,
+                            background_color=COLORS["white"],
+                        )
+                    )
 
 
 class CalendarApp(App):
