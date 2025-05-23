@@ -31,6 +31,7 @@ for calendar in calendars:
     events = calendar.date_search(
         start=datetime.now(), end=datetime.now() + timedelta(days=remaining_days)
     )
+
     for event in events:
         curr_event = event.vobject_instance.vevent
         event_name = curr_event.summary.value
