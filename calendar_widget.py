@@ -60,14 +60,17 @@ class CalendarWidget(GridLayout):
                     ],
                     24: ["Go Back Home - 11:00 AM"],
                 }
+
                 if day in google_calendar_events:
                     for event_title in google_calendar_events[day]:
                         event_label = Label(
                             text=event_title,
-                            font_size="16sp",
+                            font_size="14sp",
                             color=COLORS["black"],
                             halign="left",
                             valign="top",
+                            padding=(5, 0),
+                            # size_hint_y=(1, 0),
                         )
                         event_label.bind(size=event_label.setter("text_size"))
                         day_cell.event_box.add_widget(event_label)

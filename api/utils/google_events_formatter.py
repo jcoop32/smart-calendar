@@ -17,6 +17,8 @@ def group_events_by_day(events):
             continue
 
         formatted_time = dt.strftime("%-I:%M %p")
+        if formatted_time == "12:00 AM":
+            formatted_time = "All Day"
 
         day = dt.day
         events_by_day.setdefault(day, []).append(f"{summary} - {formatted_time}")
