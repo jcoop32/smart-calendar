@@ -6,9 +6,9 @@ from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
-from api.utils.google_events_formatter import group_events_by_day
+from api.utils.google_events_formatter import group_google_events_by_day
 
-# from utils.google_events_formatter import group_events_by_day
+# from utils.google_events_formatter import group_google_events_by_day
 
 load_dotenv()
 
@@ -58,7 +58,7 @@ def get_google_events():
         )
         events = events_result.get("items", [])
 
-        formatted_events = group_events_by_day(events)
+        formatted_events = group_google_events_by_day(events)
 
         return formatted_events
 

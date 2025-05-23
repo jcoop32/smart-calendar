@@ -1,7 +1,7 @@
 from datetime import datetime
 
 
-def group_events_by_day(events):
+def group_google_events_by_day(events):
     events_by_day = {}
 
     for event in events:

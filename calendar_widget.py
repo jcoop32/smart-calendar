@@ -7,6 +7,9 @@ from calendar_day_cell import DayCell
 from kivy.uix.label import Label
 
 from api.google_calendar import get_google_events
+from api.apple_calendar import get_apple_events
+
+from api.utils.combined_events import combined_events
 
 
 class CalendarWidget(GridLayout):
@@ -49,7 +52,6 @@ class CalendarWidget(GridLayout):
                     )
                 )
 
-                # google_calendar_events = get_google_events()
                 google_calendar_events = {
                     16: ["Flight - 6:30 AM"],
                     21: ["Come back from mexico - 7:00 AM"],
@@ -61,8 +63,28 @@ class CalendarWidget(GridLayout):
                     24: ["Go Back Home - 11:00 AM"],
                 }
 
-                if day in google_calendar_events:
-                    for event_title in google_calendar_events[day]:
+                apple_calendar_events = {
+                    15: ["Moms birthday - All-day"],
+                    16: ["Leave for Cancun - 5:00 AM"],
+                    21: ["Come back from Cancun  - 7:00 PM"],
+                    5: [
+                        "MATH 410  John T. Rettaliata Engg Center | Room 121 - 3:15 PM"
+                    ],
+                    2: [
+                        "CS 485 Stuart Rm 108 - 10:00 AM",
+                        "CS 430 Recitation PH 108 - 1:50 PM",
+                    ],
+                    1: ["CS 430 Pritzker Rm 129 - 1:50 PM"],
+                }
+                # google_calendar_events = get_google_events()
+                # apple_calendar_events = get_apple_events()
+
+                all_events = combined_events(
+                    google_calendar_events, apple_calendar_events
+                )
+
+                if day in all_events:
+                    for event_title in all_events[day]:
                         event_label = Label(
                             text=event_title,
                             font_size="14sp",
@@ -70,7 +92,6 @@ class CalendarWidget(GridLayout):
                             halign="left",
                             valign="top",
                             padding=(5, 0),
-                            # size_hint_y=(1, 0),
                         )
                         event_label.bind(size=event_label.setter("text_size"))
                         day_cell.event_box.add_widget(event_label)
