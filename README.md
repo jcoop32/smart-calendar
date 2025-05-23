@@ -60,7 +60,7 @@ josh_icloud_password="YOUR_ICLOUD_APP_SPECIFIC_PASSWORD"
 To run the application, execute `main.py`:
 
 ```bash
-python main.py
+python3 main.py
 ```
 
 
