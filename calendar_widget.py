@@ -5,8 +5,7 @@ import calendar
 from colors import COLORS
 from calendar_day_cell import DayCell
 from kivy.uix.label import Label
-
-from api.google_calendar import get_google_events
+from kivy.graphics import Color, Rectangle  # Ensure Color and Rectangle are imported
 
 
 class CalendarWidget(GridLayout):
@@ -22,9 +21,19 @@ class CalendarWidget(GridLayout):
 
         calendar.setfirstweekday(calendar.SUNDAY)
 
+        # Initialize color attributes for customization
+        self.current_day_bg_color = COLORS["lightgray"]
+        self.default_day_bg_color = COLORS["white"]
+        self.date_text_color = COLORS["black"]
+        self.event_bg_color = COLORS["gray"]
+        self.event_text_color = COLORS["black"]
+
         self.build_calendar()
 
     def build_calendar(self):
+        # Clear existing widgets before rebuilding
+        self.clear_widgets()
+
         year = self.current_year
         month = self.current_month
         current_day = self.current_day
@@ -35,17 +44,21 @@ class CalendarWidget(GridLayout):
         for week in days:
             for day in week:
                 bg_color = (
-                    COLORS["lightgray"] if day == current_day else COLORS["white"]
+                    self.current_day_bg_color
+                    if day == current_day
+                    else self.default_day_bg_color
                 )
                 day_cell = (
                     DayCell(
-                        day_num=day, bg_color=bg_color, date_text_color=COLORS["black"]
+                        day_num=day,
+                        bg_color=bg_color,
+                        date_text_color=self.date_text_color,
                     )
                     if day != 0
                     else DayCell(
                         day_num="",
                         bg_color=bg_color,
-                        date_text_color=COLORS["white"],
+                        date_text_color=self.date_text_color,  # Use date_text_color here too for empty cells
                     )
                 )
 
@@ -65,11 +78,44 @@ class CalendarWidget(GridLayout):
                         event_label = Label(
                             text=event_title,
                             font_size="16sp",
-                            color=COLORS["black"],
+                            color=self.event_text_color,  # Use event_text_color
                             halign="left",
-                            valign="top",
+                            valign="top",  # Ensure this is uncommented
+                            size_hint_y=None,  # Ensure this is uncommented
+                            padding=(5, 2),  # Ensure this is uncommented
                         )
+                        # This correctly binds the Label's size to its text_size for wrapping
                         event_label.bind(size=event_label.setter("text_size"))
+
+                        # Add background color
+                        with event_label.canvas.before:
+                            Color(*self.event_bg_color)  # Use event_bg_color
+                            event_label.rect = Rectangle(
+                                size=event_label.size, pos=event_label.pos
+                            )
+                        # Corrected binding: use lambda functions to directly set rectangle properties
+                        event_label.bind(
+                            pos=lambda instance, value: setattr(
+                                event_label.rect, "pos", value
+                            )
+                        )
+                        event_label.bind(
+                            size=lambda instance, value: setattr(
+                                event_label.rect, "size", value
+                            )
+                        )
+
                         day_cell.event_box.add_widget(event_label)
 
                 self.add_widget(day_cell)
+
+    def update_colors(self, new_color_settings):
+        # Update the color attributes based on selections from the popup
+        self.current_day_bg_color = COLORS[new_color_settings["Current Day Background"]]
+        self.default_day_bg_color = COLORS[new_color_settings["Default Day Background"]]
+        self.date_text_color = COLORS[new_color_settings["Date Text Color"]]
+        self.event_bg_color = COLORS[new_color_settings["Event Background Color"]]
+        self.event_text_color = COLORS[new_color_settings["Event Text Color"]]
+
+        # Rebuild the calendar with the new colors
+        self.build_calendar()
