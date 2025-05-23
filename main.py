@@ -3,7 +3,6 @@ from kivy.uix.boxlayout import BoxLayout
 
 import datetime
 
-from colors import COLORS
 from calendar_widget import CalendarWidget
 
 from kivy.uix.label import Label
