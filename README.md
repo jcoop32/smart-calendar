@@ -23,10 +23,10 @@ Before running the application, ensure you have the following installed:
 
 1.  **Clone the repository:**
     ```bash
-    git clone <repository_url>
+    git clone https://github.com/jcoop32/smart-calendar
     cd smart-calendar
     ```
-    *(Note: Replace `<repository_url>` with the actual URL if this project is hosted.)*
+
 
 2.  **Install dependencies:**
     ```bash
