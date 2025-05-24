@@ -1,6 +1,4 @@
 from datetime import datetime, timezone
-import os
-from dotenv import load_dotenv
 
 from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
@@ -11,8 +9,6 @@ from google.auth.exceptions import RefreshError
 from api.utils.google_events_formatter import group_google_events_by_day
 
 # from utils.google_events_formatter import group_google_events_by_day
-
-load_dotenv()
 
 today = datetime.now(tz=timezone.utc)
 year = today.year
@@ -34,7 +30,6 @@ time_max = next_month.isoformat()
 
 def get_google_events(creds_data):
     creds = Credentials.from_authorized_user_info(creds_data)
-
     try:
         service = build("calendar", "v3", credentials=creds)
         events_result = (
