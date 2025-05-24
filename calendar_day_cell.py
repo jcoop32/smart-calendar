@@ -10,6 +10,7 @@ class DayCell(BoxLayout):
         self.orientation = "vertical"
         self.padding = 2
         self.spacing = 5
+        self.day_num = day_num
 
         with self.canvas.before:
             Color(*bg_color)

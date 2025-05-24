@@ -5,22 +5,14 @@ from dotenv import load_dotenv
 from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
+from google.auth.exceptions import RefreshError
+
 
 from api.utils.google_events_formatter import group_google_events_by_day
 
 # from utils.google_events_formatter import group_google_events_by_day
 
 load_dotenv()
-
-creds_data = {
-    "client_id": os.getenv("GOOGLE_CLIENT_ID"),
-    "client_secret": os.getenv("GOOGLE_CLIENT_SECRET"),
-    "refresh_token": os.getenv("GOOGLE_REFRESH_TOKEN"),
-    "token": os.getenv("GOOGLE_ACCESS_TOKEN"),
-    "token_uri": "https://oauth2.googleapis.com/token",
-    "scopes": ["https://www.googleapis.com/auth/calendar.readonly"],
-}
-
 
 today = datetime.now(tz=timezone.utc)
 year = today.year
@@ -40,7 +32,7 @@ time_min = start_of_month.isoformat()
 time_max = next_month.isoformat()
 
 
-def get_google_events():
+def get_google_events(creds_data):
     creds = Credentials.from_authorized_user_info(creds_data)
 
     try:
@@ -62,5 +54,19 @@ def get_google_events():
 
         return formatted_events
 
+    except RefreshError as error:
+        print(
+            f"Google Token Refresh Error: {error}. Please ensure your Google credentials are valid and up-to-date, and that your Client ID/Secret are correctly configured."
+        )
+        return {}
     except HttpError as error:
-        print(f"An error occurred: {error}")
+        print(f"An HTTP error occurred with Google Calendar: {error}")
+        return {}
+    except Exception as error:
+        print(
+            f"An unexpected error occurred while fetching Google Calendar events: {error}"
+        )
+        return {}
+
+
+# print(get_google_events())

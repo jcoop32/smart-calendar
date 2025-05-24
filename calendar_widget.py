@@ -6,15 +6,15 @@ from colors import COLORS
 from calendar_day_cell import DayCell
 from kivy.uix.label import Label
 
-from api.google_calendar import get_google_events
-from api.apple_calendar import get_apple_events
+import threading
+from kivy.clock import mainthread
 
-from api.utils.combined_events import combined_events
+from api.utils.get_all_user_events import get_all_user_events
 
 
 class CalendarWidget(GridLayout):
 
-    def __init__(self, current_year, current_month, current_day, **kwargs):
+    def __init__(self, current_year, current_month, current_day, users, **kwargs):
         super().__init__(**kwargs)
         self.cols = 7
         self.padding = 5
@@ -22,12 +22,15 @@ class CalendarWidget(GridLayout):
         self.current_year = current_year
         self.current_month = current_month
         self.current_day = current_day
+        self.users = users
 
         calendar.setfirstweekday(calendar.SUNDAY)
+        self.initialize_calendar_grid()
+        threading.Thread(target=self._fetch_and_display_events, daemon=True).start()
 
-        self.build_calendar()
+    def initialize_calendar_grid(self):
+        self.clear_widgets()
 
-    def build_calendar(self):
         year = self.current_year
         month = self.current_month
         current_day = self.current_day
@@ -51,49 +54,29 @@ class CalendarWidget(GridLayout):
                         date_text_color=COLORS["white"],
                     )
                 )
-
-                google_calendar_events = {
-                    16: ["Flight - 6:30 AM"],
-                    21: ["Come back from mexico - 7:00 AM"],
-                    22: [
-                        "Chill with Tra My - 12:00 AM",
-                        "Go to Costco - 4:15 PM",
-                        "Eat dinner - 7:15 PM",
-                    ],
-                    24: ["Go Back Home - 11:00 AM"],
-                }
-
-                apple_calendar_events = {
-                    15: ["Moms birthday - All-day"],
-                    16: ["Leave for Cancun - 5:00 AM"],
-                    21: ["Come back from Cancun  - 7:00 PM"],
-                    5: [
-                        "MATH 410  John T. Rettaliata Engg Center | Room 121 - 3:15 PM"
-                    ],
-                    2: [
-                        "CS 485 Stuart Rm 108 - 10:00 AM",
-                        "CS 430 Recitation PH 108 - 1:50 PM",
-                    ],
-                    1: ["CS 430 Pritzker Rm 129 - 1:50 PM"],
-                }
-                # google_calendar_events = get_google_events()
-                # apple_calendar_events = get_apple_events()
-
-                all_events = combined_events(
-                    google_calendar_events, apple_calendar_events
-                )
-
-                if day in all_events:
-                    for event_title in all_events[day]:
-                        event_label = Label(
-                            text=event_title,
-                            font_size="14sp",
-                            color=COLORS["black"],
-                            halign="left",
-                            valign="top",
-                            padding=(5, 0),
-                        )
-                        event_label.bind(size=event_label.setter("text_size"))
-                        day_cell.event_box.add_widget(event_label)
-
                 self.add_widget(day_cell)
+        self.day_cells = self.children[:-7][::-1]
+
+    def _fetch_and_display_events(self):
+        all_events = get_all_user_events(self.users)
+        # Update UI on main thread
+        self._update_calendar_with_events_on_mainthread(all_events)
+
+    @mainthread
+    def _update_calendar_with_events_on_mainthread(self, all_events):
+        for day_cell_widget in self.day_cells:
+            day_num = day_cell_widget.day_num
+            day_cell_widget.event_box.clear_widgets()
+
+            if day_num != 0 and day_num in all_events:
+                for event_title in all_events[day_num]:
+                    event_label = Label(
+                        text=event_title,
+                        font_size="14sp",
+                        color=COLORS["black"],
+                        halign="left",
+                        valign="top",
+                        padding=(5, 0),
+                    )
+                    event_label.bind(size=event_label.setter("text_size"))
+                    day_cell_widget.event_box.add_widget(event_label)

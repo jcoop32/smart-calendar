@@ -18,6 +18,7 @@ month_name = current_datetime.strftime("%B")
 current_year = current_datetime.year
 current_month = current_datetime.month
 current_day = current_datetime.day
+users = ["JOSHUA", "TRAMY"]
 
 
 class CalendarApp(App):
@@ -30,6 +31,7 @@ class CalendarApp(App):
                 current_year=current_year,
                 current_month=current_month,
                 current_day=current_day,
+                users=users,
             )
         )
         return root
