@@ -3,7 +3,7 @@ from kivy.uix.gridlayout import GridLayout
 import calendar
 
 from colors import COLORS
-from calendar_day_cell import DayCell
+from widgets.calendar_day_cell import DayCell
 from kivy.uix.label import Label
 
 import threading
@@ -30,7 +30,6 @@ class CalendarWidget(GridLayout):
 
     def initialize_calendar_grid(self):
         self.clear_widgets()
-
         year = self.current_year
         month = self.current_month
         current_day = self.current_day

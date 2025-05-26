@@ -3,7 +3,7 @@ from kivy.uix.boxlayout import BoxLayout
 
 import datetime
 
-from calendar_widget import CalendarWidget
+from widgets.calendar_widget import CalendarWidget
 
 from kivy.uix.label import Label
 
@@ -18,6 +18,7 @@ month_name = current_datetime.strftime("%B")
 current_year = current_datetime.year
 current_month = current_datetime.month
 current_day = current_datetime.day
+# user names from .env
 users = ["JOSHUA", "TRA_MY", "MOM"]
 
 
