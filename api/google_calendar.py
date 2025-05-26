@@ -28,7 +28,7 @@ time_min = start_of_month.isoformat()
 time_max = next_month.isoformat()
 
 
-def get_google_events(creds_data):
+def get_google_events(creds_data, name):
     creds = Credentials.from_authorized_user_info(creds_data)
     try:
         service = build("calendar", "v3", credentials=creds)
@@ -45,7 +45,7 @@ def get_google_events(creds_data):
         )
         events = events_result.get("items", [])
 
-        formatted_events = group_google_events_by_day(events)
+        formatted_events = group_google_events_by_day(events, name)
 
         return formatted_events
 

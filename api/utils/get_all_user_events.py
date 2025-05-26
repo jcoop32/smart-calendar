@@ -13,7 +13,7 @@ def get_all_user_events(users):
     all_combined_events = {}
 
     for user_prefix in users:
-
+        name = user_prefix.replace("_", " ").title()
         google_creds_data = {
             "client_id": os.getenv("GOOGLE_CLIENT_ID"),
             "client_secret": os.getenv("GOOGLE_CLIENT_SECRET"),
@@ -30,7 +30,7 @@ def get_all_user_events(users):
         ):
             google_calendar_events = {}
         else:
-            google_calendar_events = get_google_events(google_creds_data)
+            google_calendar_events = get_google_events(google_creds_data, name)
 
         # Apple Credentials for current user
         icloud_username = os.getenv(f"{user_prefix}_ICLOUD_EMAIL")
@@ -38,7 +38,9 @@ def get_all_user_events(users):
         if not (icloud_username and icloud_password):
             apple_calendar_events = {}
         else:
-            apple_calendar_events = get_apple_events(icloud_username, icloud_password)
+            apple_calendar_events = get_apple_events(
+                icloud_username, icloud_password, name
+            )
 
         # Combine events for the current user
         user_events = combined_events(google_calendar_events, apple_calendar_events)

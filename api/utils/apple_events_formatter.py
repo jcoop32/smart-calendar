@@ -1,7 +1,7 @@
 from datetime import datetime, date
 
 
-def group_apple_events_by_day(events):
+def group_apple_events_by_day(events, name):
     events_by_day = {}
 
     for event in events:
@@ -33,7 +33,7 @@ def group_apple_events_by_day(events):
 
         if event_day is not None:
             events_by_day.setdefault(event_day, []).append(
-                f"{event_name} - {formatted_time}"
+                f"{event_name} - {formatted_time} ({name})"
             )
 
     return events_by_day
