@@ -35,11 +35,7 @@ class DayCell(BoxLayout):
         self.add_widget(date_anchor)
 
         # events to be appended here
-        self.event_box = BoxLayout(
-            orientation="vertical",
-            spacing=1,
-            size_hint=(1, 1),
-        )
+        self.event_box = BoxLayout(orientation="vertical", spacing=1, size_hint=(1, 1))
         self.add_widget(self.event_box)
 
     def _update_rect(self, *args):

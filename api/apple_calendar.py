@@ -26,7 +26,7 @@ else:
     end_of_month = datetime(year, month + 1, 1) - timedelta(days=1)
 
 
-def get_apple_events(icloud_email, icloud_password, name):
+def get_apple_events(icloud_email, icloud_password):
     try:
         client = DAVClient(
             url="https://caldav.icloud.com/",
@@ -42,7 +42,7 @@ def get_apple_events(icloud_email, icloud_password, name):
             events = calendar_obj.date_search(start=start_of_month, end=end_of_month)
             all_raw_events.extend(events)
 
-        formatted_events = group_apple_events_by_day(all_raw_events, name)
+        formatted_events = group_apple_events_by_day(all_raw_events)
         return formatted_events
     except Exception as e:
         print(f"An error occurred with Apple Calendar for user {icloud_email}: {e}")

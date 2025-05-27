@@ -6,6 +6,9 @@ from api.apple_calendar import get_apple_events
 
 from api.utils.combined_events import combined_events
 
+import random
+from colors import HIGHLIGHTED_COLORS
+
 load_dotenv()
 
 
@@ -30,7 +33,7 @@ def get_all_user_events(users):
         ):
             google_calendar_events = {}
         else:
-            google_calendar_events = get_google_events(google_creds_data, name)
+            google_calendar_events = get_google_events(google_creds_data)
 
         # Apple Credentials for current user
         icloud_username = os.getenv(f"{user_prefix}_ICLOUD_EMAIL")
@@ -38,14 +41,22 @@ def get_all_user_events(users):
         if not (icloud_username and icloud_password):
             apple_calendar_events = {}
         else:
-            apple_calendar_events = get_apple_events(
-                icloud_username, icloud_password, name
-            )
+            apple_calendar_events = get_apple_events(icloud_username, icloud_password)
 
         # Combine events for the current user
         user_events = combined_events(google_calendar_events, apple_calendar_events)
 
+        user_color = (
+            random.choice(list(HIGHLIGHTED_COLORS.values()))
+            if name != "Tra My"
+            else HIGHLIGHTED_COLORS["pink"]
+        )
+
         # merge current user's events into the overall combined events
         for day, events_list in user_events.items():
-            all_combined_events.setdefault(day, []).extend(events_list)
+            formatted_day_events = [
+                {"title": f"{event_title} ({name})", "color": user_color}
+                for event_title in events_list
+            ]
+            all_combined_events.setdefault(day, []).extend(formatted_day_events)
     return all_combined_events

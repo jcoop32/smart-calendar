@@ -11,6 +11,8 @@ from kivy.clock import mainthread
 
 from api.utils.get_all_user_events import get_all_user_events
 
+from widgets.event_label import EventLabel
+
 
 class CalendarWidget(GridLayout):
 
@@ -58,6 +60,7 @@ class CalendarWidget(GridLayout):
 
     def _fetch_and_display_events(self):
         all_events = get_all_user_events(self.users)
+
         # Update UI on main thread
         self._update_calendar_with_events_on_mainthread(all_events)
 
@@ -68,14 +71,8 @@ class CalendarWidget(GridLayout):
             day_cell_widget.event_box.clear_widgets()
 
             if day_num != 0 and day_num in all_events:
-                for event_title in all_events[day_num]:
-                    event_label = Label(
-                        text=event_title,
-                        font_size="14sp",
-                        color=COLORS["black"],
-                        halign="left",
-                        valign="top",
-                        padding=(5, 0),
+                for event_data in all_events[day_num]:
+                    event_label = EventLabel(
+                        event_title=event_data["title"], bg_color=event_data["color"]
                     )
-                    event_label.bind(size=event_label.setter("text_size"))
                     day_cell_widget.event_box.add_widget(event_label)

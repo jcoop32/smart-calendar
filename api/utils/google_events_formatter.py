@@ -1,7 +1,7 @@
 from datetime import datetime
 
 
-def group_google_events_by_day(events, name):
+def group_google_events_by_day(events):
     events_by_day = {}
 
     for event in events:
@@ -21,8 +21,6 @@ def group_google_events_by_day(events, name):
             formatted_time = "All Day"
 
         day = dt.day
-        events_by_day.setdefault(day, []).append(
-            f"{summary} - {formatted_time} ({name})"
-        )
+        events_by_day.setdefault(day, []).append(f"{summary} - {formatted_time}")
 
     return events_by_day
