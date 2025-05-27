@@ -19,7 +19,7 @@ current_year = current_datetime.year
 current_month = current_datetime.month
 current_day = current_datetime.day
 # user names from .env
-users = ["JOSHUA", "TRA_MY", "MOM"]
+users = ["JOSHUA", "TRA_MY", "MOM", "KAYLA"]
 
 
 class CalendarApp(App):
