@@ -17,7 +17,7 @@ This is a desktop calendar application built with Kivy, designed to provide a cu
 Before running the application, ensure you have the following installed:
 
 * Python 3.x
-* The required Python libraries listed in `requirements.txt`
+* The required Python libraries listed in `requirements.txt`.
 
 ## Installation
 
@@ -30,7 +30,7 @@ Before running the application, ensure you have the following installed:
 
 2.  **Install dependencies:**
     ```bash
-    pip install -r requirements.txt
+    pip3 install -r requirements.txt
     ```
 
 
@@ -41,19 +41,29 @@ This application uses environment variables for API keys. Create a `.env` file i
 ```ini
 GOOGLE_CLIENT_ID="YOUR_GOOGLE_CLIENT_ID"
 GOOGLE_CLIENT_SECRET="YOUR_GOOGLE_CLIENT_SECRET"
-GOOGLE_REFRESH_TOKEN="YOUR_GOOGLE_REFRESH_TOKEN"
-GOOGLE_ACCESS_TOKEN="YOUR_GOOGLE_ACCESS_TOKEN"
-josh_icloud="YOUR_ICLOUD_USERNAME"
-josh_icloud_password="YOUR_ICLOUD_APP_SPECIFIC_PASSWORD"
+YOUR_USER_PREFIX_GOOGLE_REFRESH_TOKEN="YOUR_GOOGLE_REFRESH_TOKEN"
+YOUR_USER_PREFIX_GOOGLE_ACCESS_TOKEN="YOUR_GOOGLE_ACCESS_TOKEN"
+YOUR_USER_PREFIX_ICLOUD_EMAIL="YOUR_ICLOUD_USERNAME"
+YOUR_USER_PREFIX_ICLOUD_PASSWORD="YOUR_ICLOUD_APP_SPECIFIC_PASSWORD"
 ```
+For example, if you have user "JOSHUA" as specified in `main.py`, your `.env` file would include:
+```ini
+GOOGLE_CLIENT_ID="YOUR_GOOGLE_CLIENT_ID"
+GOOGLE_CLIENT_SECRET="YOUR_GOOGLE_CLIENT_SECRET"
 
+JOSHUA_GOOGLE_REFRESH_TOKEN="YOUR_JOSHUA_GOOGLE_REFRESH_TOKEN"
+JOSHUA_GOOGLE_ACCESS_TOKEN="YOUR_JOSHUA_GOOGLE_ACCESS_TOKEN"
+JOSHUA_ICLOUD_EMAIL="YOUR_JOSHUA_ICLOUD_USERNAME"
+JOSHUA_ICLOUD_PASSWORD="YOUR_JOSHUA_ICLOUD_APP_SPECIFIC_PASSWORD"
+
+```
 
 * **Google Calendar API**:
     * Follow the Google Calendar API Python quickstart guide to enable the API and obtain your `CLIENT_ID`, `CLIENT_SECRET`.
     * For `REFRESH_TOKEN` and `ACCESS_TOKEN`, you'll typically get these after the initial OAuth 2.0 authorization flow. The provided code assumes you have these already.
 * **Apple Calendar (iCloud) API**:
-    * `josh_icloud`: Your Apple ID (iCloud username).
-    * `josh_icloud_password`: An app-specific password generated from your Apple ID account settings.
+    * `YOUR_USER_PREFIX_ICLOUD_EMAIL`: Your Apple ID (iCloud username).
+    * `YOUR_USER_PREFIX_ICLOUD_PASSWORD`: An app-specific password generated from your Apple ID account settings.
 
 ## Usage
 
@@ -62,8 +72,6 @@ To run the application, execute `main.py`:
 ```bash
 python3 main.py
 ```
-
-
 The calendar window should appear, displaying the current month and fetching events.
 
 ## Project Structure
@@ -72,15 +80,22 @@ The calendar window should appear, displaying the current month and fetching eve
 smart-calendar/
 ├── api/
 │   ├── utils/
-│   │   └── google_events_formatter.py   # Formats Google Calendar events
+│   │   ├── google_events_formatter.py   # Formats Google Calendar events
+│   │   ├── apple_events_formatter.py    # Formats Apple Calendar events
+│   │   ├── combined_events.py           # Combines events from Google and Apple Calendars
+│   │   └── get_all_user_events.py       # Fetches events for all configured users
 │   ├── apple_calendar.py              # Handles Apple Calendar (iCloud) API interactions
 │   └── google_calendar.py             # Handles Google Calendar API interactions
+├── widgets/
+│   ├── calendar_day_cell.py           # Kivy widget for individual day cells in the calendar grid
+│   ├── calendar_widget.py             # Kivy widget for the overall calendar grid and event population
+│   └── event_label.py                 # Kivy widget for displaying individual events
 ├── colors.py                          # Defines a dictionary of colors used in the application
 ├── main.py                            # Main application entry point and Kivy App setup
-├── calendar_widget.py                 # Kivy widget for the overall calendar grid and event population
-├── calendar_day_cell.py               # Kivy widget for individual day cells in the calendar grid
 ├── test.py                            # A simple test Kivy application (for development/testing purposes)
-└── requirements.txt                   # List of Python dependencies
+├── requirements.txt                   # List of Python dependencies
+└── google_token_gen/
+    └── googleapi.py                   # Script for generating Google API tokens
 ```
 
 ## Customization
@@ -91,7 +106,4 @@ smart-calendar/
     * The background color for events can be changed by modifying `Color(*COLORS["lightgray"])` to any other color defined in `colors.py`.
 * **Day Cell Layout**: In `calendar_day_cell.py`, you can modify `padding` and `spacing` of the `DayCell` and its internal `event_box` to adjust the layout and spacing of elements within each day cell. The `height` of the `date_anchor` can also be adjusted for date number spacing.
 
-## Notes and Future Enhancements
 
-* The Apple Calendar integration in `api/apple_calendar.py` currently only prints event details to the console. To fully integrate it into the UI, you would need to adapt the `group_events_by_day` logic (similar to Google Calendar) and add the fetched Apple events to the `DayCell`'s `event_box`.
-* Error handling for API calls could be made more robust (e.g., displaying user-friendly messages for network issues or authentication failures).
