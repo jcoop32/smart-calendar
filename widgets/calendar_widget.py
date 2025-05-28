@@ -88,6 +88,10 @@ class CalendarWidget(GridLayout):
             ],
             22: [
                 {
+                    "title": "CS 485 Stuart Rm 108 - 10:00 AM (Joshua)",
+                    "color": (0.25098, 0.87843, 0.81569, 0.5),
+                },
+                {
                     "title": "Chill with Tra My - All Day (Joshua)",
                     "color": (0.25098, 0.87843, 0.81569, 0.5),
                 },
@@ -174,6 +178,10 @@ class CalendarWidget(GridLayout):
                 },
             ],
             22: [
+                {
+                    "title": "CS 485 Stuart Rm 108 - 10:00 AM (Joshua)",
+                    "color": (0.25098, 0.87843, 0.81569, 0.5),
+                },
                 {
                     "title": "Chill with Tra My - All Day (Joshua)",
                     "color": (0.25098, 0.87843, 0.81569, 0.5),
