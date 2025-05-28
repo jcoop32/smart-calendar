@@ -24,7 +24,7 @@ class DayCell(GridLayout):
             anchor_x="left",
             anchor_y="top",
             size_hint=(1, None),
-            height=70,
+            height=65,
         )
         date_anchor.add_widget(
             Label(
@@ -32,15 +32,12 @@ class DayCell(GridLayout):
                 size_hint=(None, None),
                 font_size="20sp",
                 color=date_text_color,
-                padding=(0, 0),
             )
         )
         self.add_widget(date_anchor)
 
         # events to be appended here
-        self.event_box = BoxLayout(
-            orientation="vertical", spacing=1, size_hint=(1, 1), padding=(0, 0, 0, 0)
-        )
+        self.event_box = BoxLayout(orientation="vertical", spacing=1, size_hint=(1, 1))
         self.add_widget(self.event_box)
 
     def _update_rect(self, *args):

@@ -9,7 +9,7 @@ class EventLabel(Label):
 
         super().__init__(
             text=event_title,
-            font_size="10sp",
+            font_size="14sp",
             color=COLORS["black"],
             halign="left",
             valign="center",
