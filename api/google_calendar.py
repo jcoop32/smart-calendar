@@ -10,27 +10,36 @@ from api.utils.google_events_formatter import group_google_events_by_day
 
 # from utils.google_events_formatter import group_google_events_by_day
 
-today = datetime.now(tz=timezone.utc)
-year = today.year
-month = today.month
+# today = datetime.now(tz=timezone.utc)
+# year = today.year
+# month = today.month
 
-# Start of current month
-start_of_month = datetime(year, month, 1, tzinfo=timezone.utc)
+# # Start of current month
+# start_of_month = datetime(year, month, 1, tzinfo=timezone.utc)
 
-# Start of next month
-if month == 12:
-    next_month = datetime(year + 1, 1, 1, tzinfo=timezone.utc)
-else:
-    next_month = datetime(year, month + 1, 1, tzinfo=timezone.utc)
+# # Start of next month
+# if month == 12:
+#     next_month = datetime(year + 1, 1, 1, tzinfo=timezone.utc)
+# else:
+#     next_month = datetime(year, month + 1, 1, tzinfo=timezone.utc)
 
-# Format to ISO 8601
-time_min = start_of_month.isoformat()
-time_max = next_month.isoformat()
+# # Format to ISO 8601
+# time_min = start_of_month.isoformat()
+# time_max = next_month.isoformat()
 
 
-def get_google_events(creds_data):
+def get_google_events(creds_data, target_year, target_month):
     creds = Credentials.from_authorized_user_info(creds_data)
     try:
+        # Calculate start and end of the target month based on parameters
+        start_of_month = datetime(target_year, target_month, 1, tzinfo=timezone.utc)
+        if target_month == 12:
+            next_month = datetime(target_year + 1, 1, 1, tzinfo=timezone.utc)
+        else:
+            next_month = datetime(target_year, target_month + 1, 1, tzinfo=timezone.utc)
+
+        time_min = start_of_month.isoformat()
+        time_max = next_month.isoformat()
         service = build("calendar", "v3", credentials=creds)
         events_result = (
             service.events()

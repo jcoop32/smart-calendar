@@ -12,10 +12,10 @@ class EventLabel(Label):
             font_size="10sp",
             color=COLORS["black"],
             halign="left",
-            valign="top",
+            valign="center",
             padding=(5, 0),
             size_hint_x=1,
-            size_hint_y=None,
+            size_hint_y=1,
             **kwargs,
         )
 
@@ -24,10 +24,10 @@ class EventLabel(Label):
             Color(*bg_color)
             self.rect = Rectangle(size=self.size, pos=self.pos)
 
-        # Crucial: Bind the rectangle's position and size to the EventLabel's own position and size.
         self.bind(pos=self._update_rect, size=self._update_rect)
 
         self.bind(size=self.setter("text_size"))
+        # self.bind(minimum_height=self.setter("height"))
 
     def _update_rect(self, *args):
         self.rect.pos = self.pos

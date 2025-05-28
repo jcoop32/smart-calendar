@@ -12,7 +12,7 @@ from colors import HIGHLIGHTED_COLORS
 load_dotenv()
 
 
-def get_all_user_events(users):
+def get_all_user_events(users, target_year, target_month):
     all_combined_events = {}
 
     for user_prefix in users:
@@ -33,7 +33,9 @@ def get_all_user_events(users):
         ):
             google_calendar_events = {}
         else:
-            google_calendar_events = get_google_events(google_creds_data)
+            google_calendar_events = get_google_events(
+                google_creds_data, target_year, target_month
+            )
 
         # Apple Credentials for current user
         icloud_username = os.getenv(f"{user_prefix}_ICLOUD_EMAIL")
@@ -41,7 +43,9 @@ def get_all_user_events(users):
         if not (icloud_username and icloud_password):
             apple_calendar_events = {}
         else:
-            apple_calendar_events = get_apple_events(icloud_username, icloud_password)
+            apple_calendar_events = get_apple_events(
+                icloud_username, icloud_password, target_year, target_month
+            )
 
         # Combine events for the current user
         user_events = combined_events(google_calendar_events, apple_calendar_events)

@@ -1,13 +1,15 @@
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.gridlayout import GridLayout
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.label import Label
 from kivy.graphics import Color, Rectangle
 
 
-class DayCell(BoxLayout):
+class DayCell(GridLayout):
     def __init__(self, day_num, bg_color, date_text_color, **kwargs):
         super().__init__(**kwargs)
-        self.orientation = "vertical"
+        self.cols = 1
+        self.rows = 2
         self.padding = 2
         self.spacing = 5
         self.day_num = day_num
@@ -28,14 +30,17 @@ class DayCell(BoxLayout):
             Label(
                 text=str(day_num),
                 size_hint=(None, None),
-                font_size=40,
+                font_size="20sp",
                 color=date_text_color,
+                padding=(0, 0),
             )
         )
         self.add_widget(date_anchor)
 
         # events to be appended here
-        self.event_box = BoxLayout(orientation="vertical", spacing=1, size_hint=(1, 1))
+        self.event_box = BoxLayout(
+            orientation="vertical", spacing=1, size_hint=(1, 1), padding=(0, 0, 0, 0)
+        )
         self.add_widget(self.event_box)
 
     def _update_rect(self, *args):

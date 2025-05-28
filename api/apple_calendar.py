@@ -1,5 +1,5 @@
 from caldav import DAVClient
-from datetime import datetime, timedelta
+from datetime import datetime, timezone, timedelta
 import logging
 
 
@@ -11,23 +11,19 @@ from api.utils.apple_events_formatter import group_apple_events_by_day
 # This will prevent messages with severity WARNING or lower from being displayed.
 logging.getLogger().setLevel(logging.ERROR)
 
-today = datetime.today()
-year = today.year
-month = today.month
 
-
-# Calculate the first day of the current month
-start_of_month = datetime(year, month, 1)
-
-# Calculate the last day of the current month
-if month == 12:
-    end_of_month = datetime(year + 1, 1, 1) - timedelta(days=1)
-else:
-    end_of_month = datetime(year, month + 1, 1) - timedelta(days=1)
-
-
-def get_apple_events(icloud_email, icloud_password):
+def get_apple_events(icloud_email, icloud_password, target_year, target_month):
     try:
+        # Make datetimes timezone-aware (UTC)
+        start_of_month = datetime(target_year, target_month, 1, tzinfo=timezone.utc)
+        if target_month == 12:
+            end_of_month = datetime(
+                target_year + 1, 1, 1, tzinfo=timezone.utc
+            ) - timedelta(days=1)
+        else:
+            end_of_month = datetime(
+                target_year, target_month + 1, 1, tzinfo=timezone.utc
+            ) - timedelta(days=1)
         client = DAVClient(
             url="https://caldav.icloud.com/",
             username=icloud_email,
