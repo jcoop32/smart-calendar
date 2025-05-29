@@ -6,6 +6,9 @@ from api.apple_calendar import get_apple_events
 
 from api.utils.combined_events import combined_events
 
+# database
+from api.utils.db_cache import save_events_to_cache, load_events_from_cache, init_db
+
 import random
 from colors import HIGHLIGHTED_COLORS
 
@@ -17,6 +20,16 @@ def get_all_user_events(users, target_year, target_month):
 
     for user_prefix in users:
         name = user_prefix.replace("_", " ").title()
+
+        cache_user_events = load_events_from_cache(
+            user_prefix=user_prefix, year=target_year, month=target_month
+        )
+
+        if cache_user_events is not None:
+            for day, events_list in cache_user_events.items():
+                all_combined_events.setdefault(day, []).extend(events_list)
+            continue
+
         google_creds_data = {
             "client_id": os.getenv("GOOGLE_CLIENT_ID"),
             "client_secret": os.getenv("GOOGLE_CLIENT_SECRET"),
@@ -25,6 +38,7 @@ def get_all_user_events(users, target_year, target_month):
             "token_uri": "https://oauth2.googleapis.com/token",
             "scopes": ["https://www.googleapis.com/auth/calendar.readonly"],
         }
+
         if not (
             google_creds_data["client_id"]
             and google_creds_data["client_secret"]
@@ -56,11 +70,22 @@ def get_all_user_events(users, target_year, target_month):
             else HIGHLIGHTED_COLORS["pink"]
         )
 
+        formatted_user_events = {}
         # merge current user's events into the overall combined events
-        for day, events_list in user_events.items():
+        for day, events_list_from_api in user_events.items():
             formatted_day_events = [
                 {"title": f"{event_title} ({name})", "color": user_color}
-                for event_title in events_list
+                for event_title in events_list_from_api
             ]
-            all_combined_events.setdefault(day, []).extend(formatted_day_events)
+            formatted_user_events[day] = formatted_day_events
+            # all_combined_events.setdefault(day, []).extend(formatted_day_events)
+        save_events_to_cache(
+            user_prefix=user_prefix,
+            year=target_year,
+            month=target_month,
+            events_by_day=formatted_user_events,
+        )
+        for day, events_list_to_add in formatted_user_events.items():
+            all_combined_events.setdefault(day, []).extend(events_list_to_add)
+
     return all_combined_events

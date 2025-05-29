@@ -64,172 +64,21 @@ class CalendarWidget(GridLayout):
         self._load_and_display_events_for_current_month()
 
     def _fetch_and_display_events(self):
-        # all_events = get_all_user_events(self.users)
-        all_events = {
-            16: [
-                {
-                    "title": "Flight - 6:30 AM (Joshua)",
-                    "color": (0.25098, 0.87843, 0.81569, 0.5),
-                },
-                {
-                    "title": "Leave for Cancun - 5:00 AM (Joshua)",
-                    "color": (0.25098, 0.87843, 0.81569, 0.5),
-                },
-            ],
-            21: [
-                {
-                    "title": "Come back from mexico - 7:00 AM (Joshua)",
-                    "color": (0.25098, 0.87843, 0.81569, 0.5),
-                },
-                {
-                    "title": "Come back from Cancun  - 7:00 PM (Joshua)",
-                    "color": (0.25098, 0.87843, 0.81569, 0.5),
-                },
-            ],
-            22: [
-                {
-                    "title": "Chill with Tra My - All Day (Joshua)",
-                    "color": (0.25098, 0.87843, 0.81569, 0.5),
-                },
-                {
-                    "title": "Go to Costco - 4:15 PM (Joshua)",
-                    "color": (0.25098, 0.87843, 0.81569, 0.5),
-                },
-                {
-                    "title": "Eat dinner - 7:15 PM (Joshua)",
-                    "color": (0.25098, 0.87843, 0.81569, 0.5),
-                },
-            ],
-            24: [
-                {
-                    "title": "Go Back Home - 11:00 AM (Joshua)",
-                    "color": (0.25098, 0.87843, 0.81569, 0.5),
-                }
-            ],
-            15: [
-                {
-                    "title": "Moms birthday - All-day (Joshua)",
-                    "color": (0.25098, 0.87843, 0.81569, 0.5),
-                },
-                {
-                    "title": "Adams Birthday - 1:00 PM (Mom)",
-                    "color": (0.50196, 0.0, 0.50196, 0.5),
-                },
-            ],
-            5: [
-                {
-                    "title": "MATH 410  John T. Rettaliata Engg Center | Room 121 - 3:15 PM (Joshua)",
-                    "color": (0.25098, 0.87843, 0.81569, 0.5),
-                }
-            ],
-            2: [
-                {
-                    "title": "CS 485 Stuart Rm 108 - 10:00 AM (Joshua)",
-                    "color": (0.25098, 0.87843, 0.81569, 0.5),
-                },
-                {
-                    "title": "CS 430 Recitation PH 108 - 1:50 PM (Joshua)",
-                    "color": (0.25098, 0.87843, 0.81569, 0.5),
-                },
-            ],
-            1: [
-                {
-                    "title": "CS 430 Pritzker Rm 129 - 1:50 PM (Joshua)",
-                    "color": (0.25098, 0.87843, 0.81569, 0.5),
-                },
-                {
-                    "title": "Patho Final Exam - 4:15 PM (Tra My)",
-                    "color": (0.0, 1.0, 0.0, 0.5),
-                },
-            ],
-        }
+        all_events = get_all_user_events(
+            users=self.users,
+            target_year=self.current_year,
+            target_month=self.current_month,
+        )
+
         # Update UI on main thread
         self._update_calendar_with_events_on_mainthread(all_events)
 
     def _load_and_display_events_for_current_month(self):
-        # all_events = get_all_user_events(
-        #     users=self.users,
-        #     target_year=self.current_year,
-        #     target_month=self.current_month,
-        # )
-        all_events = {
-            16: [
-                {
-                    "title": "Flight - 6:30 AM (Joshua)",
-                    "color": (0.25098, 0.87843, 0.81569, 0.5),
-                },
-                {
-                    "title": "Leave for Cancun - 5:00 AM (Joshua)",
-                    "color": (0.25098, 0.87843, 0.81569, 0.5),
-                },
-            ],
-            21: [
-                {
-                    "title": "Come back from mexico - 7:00 AM (Joshua)",
-                    "color": (0.25098, 0.87843, 0.81569, 0.5),
-                },
-                {
-                    "title": "Come back from Cancun  - 7:00 PM (Joshua)",
-                    "color": (0.25098, 0.87843, 0.81569, 0.5),
-                },
-            ],
-            22: [
-                {
-                    "title": "Chill with Tra My - All Day (Joshua)",
-                    "color": (0.25098, 0.87843, 0.81569, 0.5),
-                },
-                {
-                    "title": "Go to Costco - 4:15 PM (Joshua)",
-                    "color": (0.25098, 0.87843, 0.81569, 0.5),
-                },
-                {
-                    "title": "Eat dinner - 7:15 PM (Joshua)",
-                    "color": (0.25098, 0.87843, 0.81569, 0.5),
-                },
-            ],
-            24: [
-                {
-                    "title": "Go Back Home - 11:00 AM (Joshua)",
-                    "color": (0.25098, 0.87843, 0.81569, 0.5),
-                }
-            ],
-            15: [
-                {
-                    "title": "Moms birthday - All-day (Joshua)",
-                    "color": (0.25098, 0.87843, 0.81569, 0.5),
-                },
-                {
-                    "title": "Adams Birthday - 1:00 PM (Mom)",
-                    "color": (0.50196, 0.0, 0.50196, 0.5),
-                },
-            ],
-            5: [
-                {
-                    "title": "MATH 410  John T. Rettaliata Engg Center | Room 121 - 3:15 PM (Joshua)",
-                    "color": (0.25098, 0.87843, 0.81569, 0.5),
-                }
-            ],
-            2: [
-                {
-                    "title": "CS 485 Stuart Rm 108 - 10:00 AM (Joshua)",
-                    "color": (0.25098, 0.87843, 0.81569, 0.5),
-                },
-                {
-                    "title": "CS 430 Recitation PH 108 - 1:50 PM (Joshua)",
-                    "color": (0.25098, 0.87843, 0.81569, 0.5),
-                },
-            ],
-            1: [
-                {
-                    "title": "CS 430 Pritzker Rm 129 - 1:50 PM (Joshua)",
-                    "color": (0.25098, 0.87843, 0.81569, 0.5),
-                },
-                {
-                    "title": "Patho Final Exam - 4:15 PM (Tra My)",
-                    "color": (0.0, 1.0, 0.0, 0.5),
-                },
-            ],
-        }
+        all_events = get_all_user_events(
+            users=self.users,
+            target_year=self.current_year,
+            target_month=self.current_month,
+        )
 
         if all_events:
             self._update_calendar_with_events_on_mainthread(all_events)

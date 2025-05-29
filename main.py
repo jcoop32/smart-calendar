@@ -3,6 +3,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 
 import datetime
+from widgets.calendar_widget import CalendarWidget
 
 
 from kivy.uix.label import Label
@@ -14,7 +15,7 @@ Config.set("graphics", "height", "1080")
 
 
 # user names from .env
-users = ["JOSHUA", "TRA_MY", "MOM", "KAYLA"]
+users = ["JOSHUA", "TRA_MY", "KAYLA"]
 
 
 class CalendarApp(App):
@@ -56,7 +57,6 @@ class CalendarApp(App):
         return root
 
     def update_month_display(self):
-        """Updates the month/year label and triggers calendar widget update."""
         month_name = datetime.date(self.current_year, self.current_month, 1).strftime(
             "%B"
         )
@@ -68,7 +68,6 @@ class CalendarApp(App):
         )
 
     def go_to_previous_month(self, instance):
-        """Calculates previous month and updates display."""
         if self.current_month == 1:  # January
             self.current_month = 12
             self.current_year -= 1
@@ -77,7 +76,6 @@ class CalendarApp(App):
         self.update_month_display()
 
     def go_to_next_month(self, instance):
-        """Calculates next month and updates display."""
         if self.current_month == 12:  # December
             self.current_month = 1
             self.current_year += 1
@@ -87,6 +85,4 @@ class CalendarApp(App):
 
 
 if __name__ == "__main__":
-    from widgets.calendar_widget import CalendarWidget
-
     CalendarApp().run()
