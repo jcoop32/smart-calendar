@@ -4,3 +4,4 @@ google_auth_oauthlib==1.2.2
 Kivy==2.3.1
 protobuf==6.31.1
 python-dotenv==1.1.0
+Requests==2.32.3
