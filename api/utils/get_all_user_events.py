@@ -7,7 +7,7 @@ from api.apple_calendar import get_apple_events
 from api.utils.combined_events import combined_events
 
 # database
-from api.utils.db_cache import save_events_to_cache, load_events_from_cache, init_db
+from api.utils.db_cache import save_events_to_cache, load_events_from_cache
 
 import random
 from colors import HIGHLIGHTED_COLORS
@@ -78,7 +78,7 @@ def get_all_user_events(users, target_year, target_month):
                 for event_title in events_list_from_api
             ]
             formatted_user_events[day] = formatted_day_events
-            # all_combined_events.setdefault(day, []).extend(formatted_day_events)
+
         save_events_to_cache(
             user_prefix=user_prefix,
             year=target_year,

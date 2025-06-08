@@ -19,8 +19,7 @@ class CalendarWidget(GridLayout):
     def __init__(self, current_year, current_month, current_day, users, **kwargs):
         super().__init__(**kwargs)
         self.cols = 7
-        self.padding = 5
-        self.spacing = 5
+        self.spacing = 3
         self.current_year = current_year
         self.current_month = current_month
         self.current_day = current_day

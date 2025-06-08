@@ -5,6 +5,7 @@ from kivy.uix.button import Button
 import datetime
 from widgets.calendar_widget import CalendarWidget
 
+from colors import COLORS
 
 from kivy.uix.label import Label
 
@@ -30,18 +31,27 @@ class CalendarApp(App):
 
         # --- Month Navigation and Display ---
         nav_layout = BoxLayout(size_hint_y=0.1, spacing=10)
-
         # Left arrow button for previous month
-        self.prev_month_btn = Button(text="<", font_size=48, size_hint_x=0.1)
+        self.prev_month_btn = Button(
+            text="<",
+            font_size=70,
+            size_hint_x=0.1,
+            background_color=COLORS["black"],
+        )
         self.prev_month_btn.bind(on_press=self.go_to_previous_month)
         nav_layout.add_widget(self.prev_month_btn)
 
         # Month and Year display label
-        self.month_year_label = Label(text=month_year, font_size=48, size_hint_x=0.8)
+        self.month_year_label = Label(text=month_year, font_size=70, size_hint_x=0.8)
         nav_layout.add_widget(self.month_year_label)
 
         # Right arrow button for next month
-        self.next_month_btn = Button(text=">", font_size=48, size_hint_x=0.1)
+        self.next_month_btn = Button(
+            text=">",
+            font_size=70,
+            size_hint_x=0.1,
+            background_color=COLORS["black"],
+        )
         self.next_month_btn.bind(on_press=self.go_to_next_month)
         nav_layout.add_widget(self.next_month_btn)
 
