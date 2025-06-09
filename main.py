@@ -4,6 +4,7 @@ from kivy.uix.button import Button
 
 import datetime
 from widgets.calendar_widget import CalendarWidget
+from widgets.weather_widget import WeatherWidget
 
 from colors import COLORS
 
@@ -40,6 +41,8 @@ class CalendarApp(App):
         )
         self.prev_month_btn.bind(on_press=self.go_to_previous_month)
         nav_layout.add_widget(self.prev_month_btn)
+
+        nav_layout.add_widget(WeatherWidget())
 
         # Month and Year display label
         self.month_year_label = Label(text=month_year, font_size=70, size_hint_x=0.8)

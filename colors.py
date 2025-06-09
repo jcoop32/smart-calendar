@@ -28,6 +28,9 @@ COLORS = {
     "beige": (0.96078, 0.96078, 0.86275, 1.0),
     "transparent_white": (1.0, 1.0, 1.0, 1.0),
     "transparent_black": (0.0, 0.0, 0.0, 1.0),
+    "orange": (1, 0.8, 0, 1),
+    "light_blue": (0.8, 0.8, 1, 1),
+    "light_green": (0.8, 1, 0.8, 1),
 }
 
 

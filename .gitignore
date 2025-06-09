@@ -1,3 +1,6 @@
 google_token_gen/credentials.json
 api/utils/events_cache.db
 dummy_data.py
+.env
+/.env
+/venv

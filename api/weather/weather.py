@@ -1,9 +1,15 @@
 import requests
 
-from get_location import get_ip_coordinates
+# from get_location import get_ip_coordinates
+
+# from conditions_map import conditions
+
+from api.weather.get_location import get_ip_coordinates
+from api.weather.conditions_map import conditions
 
 import os
 from dotenv import load_dotenv
+
 
 load_dotenv()
 
@@ -14,14 +20,13 @@ API_KEY = os.getenv("WEATHER_API_KEY")
 
 location = f"{lat},{lon}"
 
-base_url = "http://api.weatherapi.com/v1"
-endpoint = "/current.json"
-complete_url = f"{base_url}{endpoint}?key={API_KEY}&q={location}"
+
+api_url = f"http://api.weatherapi.com/v1/current.json?key={API_KEY}&q={location}"
 
 
 def get_weather():
     try:
-        response = requests.get(complete_url)
+        response = requests.get(api_url)
         response.raise_for_status()
         weather_data = response.json()
 
@@ -41,6 +46,7 @@ def get_weather():
             wind_dir = current_info["wind_dir"]
             feels_like_f = int(current_info["feelslike_f"])
             uv = int(current_info["uv"])
+            icon_file = conditions[condition_text]
 
             return (
                 temp_f,
@@ -50,6 +56,7 @@ def get_weather():
                 wind_dir,
                 feels_like_f,
                 uv,
+                icon_file,
                 city,
                 region,
             )
@@ -57,6 +64,7 @@ def get_weather():
             # print(f"--- Current Weather for {city}, {region}, {country} ---")
             # print(f"Local Time: {local_time}")
             # print(f"Conditions: {condition_text}")
+            # print(f"Conditions Icon: {icon_file}")
             # print(f"Temperature: {temp_f}°F")
             # print(f"Feels like: {feels_like_f}°F")
             # print(f"Humidity: {humidity}%")
