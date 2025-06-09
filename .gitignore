@@ -4,4 +4,4 @@ dummy_data.py
 .env
 /.env
 /venv
-/__pycache__
+**/__pycache__
