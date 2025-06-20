@@ -46,7 +46,7 @@ def get_weather():
             wind_dir = current_info["wind_dir"]
             feels_like_f = int(current_info["feelslike_f"])
             uv = int(current_info["uv"])
-            icon_file = conditions[condition_text]
+            icon_file = conditions.get(condition_text)
 
             return (
                 temp_f,
@@ -85,3 +85,6 @@ def get_weather():
         )
     except requests.exceptions.RequestException as e:
         print(f"An unexpected error occurred: {e}")
+
+
+# get_weather()

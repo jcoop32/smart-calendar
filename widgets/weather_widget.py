@@ -1,10 +1,13 @@
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
+
 from kivy.uix.image import Image
 from kivy.properties import StringProperty, NumericProperty
 from kivy.metrics import dp  # For density-independent pixels
 import os
 from colors import COLORS
+
+from api.weather.conditions_map import conditions
 
 from api.weather.weather import get_weather
 
@@ -20,7 +23,7 @@ class WeatherWidget(BoxLayout):
     wind_direction = StringProperty("")
     humidity_value = NumericProperty(0)
     wind_speed_value = NumericProperty(0)
-    icon_name = StringProperty("/api/weather/condition_icons/sunny.png")
+    # icon_name = StringProperty("")
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -53,9 +56,14 @@ class WeatherWidget(BoxLayout):
 
     def add_weather_icon(self):
         """Add the weather icon to the widget"""
+        BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+        path = os.path.join(
+            BASE_DIR, "..", "api", "weather", "condition_icons", self.icon_name
+        )
         self.weather_icon = Image(
-            source="/api/weather/condition_icons/sunny.png",  # Binds to the icon_name property
+            source=path,  # Binds to the icon_name property
             size_hint_x=None,
+            size=(100, 100),
             width=dp(70),
             allow_stretch=True,
             keep_ratio=True,
@@ -75,10 +83,7 @@ class WeatherWidget(BoxLayout):
             text=f"{self.city_name}, {self.region_name}",
             font_size="20sp",
             color=COLORS["white"],  # White text
-            # halign="left",
-            # valign="top",
-            size_hint_y=None,
-            height=dp(25),
+            halign="left",
         )
         details_layout.add_widget(self.lbl_city)
         self.bind(city_name=self.lbl_city.setter("text"))
@@ -186,8 +191,12 @@ class WeatherWidget(BoxLayout):
         self.icon_name = icon_file
         self.region_name = region
 
+        # BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+        # path = os.path.join(
+        #     BASE_DIR, "..", "api", "weather", "condition_icons", self.icon_name
+        # )
         # Ensure the image path is correct, assuming 'images' folder
-        self.icon_source = os.path.join("/api/weather/condition_icons/", icon_file)
+        # self.icon_source = path
 
     def _update_rect(self, instance, value):
         self.rect.pos = instance.pos
@@ -197,3 +206,4 @@ class WeatherWidget(BoxLayout):
         """Update text of temperature labels when respective properties change"""
         self.lbl_temp.text = f"{self.current_temperature:.1f}°F"
         self.lbl_feels_like.text = f"(Feels like {self.feels_like_temperature:.1f}°F)"
+        self.icon_name = conditions[self.lbl_condition.text]
